@@ -25,6 +25,13 @@ def get_recommendations():
     return make_response(response, 200)
 
 
+@app.route('/api/v1/restaurant/<restaurant_id>', methods=['GET'])
+def get_restaurant_info(restaurant_id):
+    print(restaurant_id)
+    resp = DATA_PROVIDER.get_restaraunt_info(restaurant_id)
+    return make_response(resp, 200)
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return "<h1>404</h1><p>This API method does not exist.</p>", 404
