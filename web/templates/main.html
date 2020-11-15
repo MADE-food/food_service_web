@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Рекомендательная система ресторанов для Delivery Club{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form action="/" method="post">
+        <label for="user_id">ID пользователя</label>
+        <input name="user_id" id="user_id" required>
+        <input type="submit" value="Найти">
+    </form>
+
+    <div style="display: inline-block">
+        <br>
+        <div>
+            <p>История заказов:</p>
+            {% if data['history'] %}
+                <table>
+                {% for restaurant in data['history'] %}
+                    <tr>
+                        <td>{{ restaurant.id }}</td>
+                        <td>{{ restaurant.name }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            {% else %}
+                <p>История заказов не найдена</p>
+            {% endif %}
+        </div>
+
+        <br>
+
+        <div>
+            <p>Рекомендации:</p>
+            {% if data['recommendations'] %}
+                <table>
+                {% for restaurant in data['recommendations'] %}
+                    <tr>
+                        <td>{{ restaurant.id }}</td>
+                        <td>{{ restaurant.name }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            {% else %}
+                <p>Рекомендаций нет</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

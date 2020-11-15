@@ -1,0 +1,18 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.jpg') }}">
+
+<h1>Выпускной проект</h1>
+<nav>
+  <ul >
+      <li><a href="{{ url_for('home') }}">Главная</a>
+      <li><a href="{{ url_for('about') }}">О команде</a>
+  </ul>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% block content %}{% endblock %}
+</section>
