@@ -37,6 +37,9 @@ def about():
 def task():
     return render_template('task.html')
 
+@app.route('/api', methods=['GET'])
+def api():
+    return render_template('api.html')
 
 # region API
 @app.route('/api/v1/recommendations/get', methods=['GET'])
