@@ -1,6 +1,6 @@
 import flask
 from flask import jsonify, request, render_template
-from .core.provider import Provider
+from core.provider import Provider
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
