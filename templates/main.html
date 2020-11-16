@@ -43,10 +43,10 @@
                         <th>ID ресторана</th>
                         <th>Название ресторана</th>
                     </tr>
-                {% for restaurant in data['history'] %}
+                {% for chain in data['history'] %}
                     <tr>
-                        <td>{{ restaurant.id }}</td>
-                        <td>{{ restaurant.name }}</td>
+                        <td>{{ chain['chain_id'] }}</td>
+                        <td>{{ chain['chain_name'] }}</td>
                     </tr>
                 {% endfor %}
                 </table>
@@ -63,10 +63,10 @@
                         <th>ID ресторана</th>
                         <th>Название ресторана</th>
                     </tr>
-                {% for restaurant in data['recommendations'] %}
+                {% for chain in data['recommendations'] %}
                     <tr>
-                        <td>{{ restaurant.id }}</td>
-                        <td>{{ restaurant.name }}</td>
+                        <td>{{ chain['chain_id'] }}</td>
+                        <td>{{ chain['chain_name'] }}</td>
                     </tr>
                 {% endfor %}
                 </table>

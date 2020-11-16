@@ -14,7 +14,7 @@ def home():
         except:
             user_id = None
 
-        recom = DATA_PROVIDER.get_user_recomendations(user_id)
+        recom = DATA_PROVIDER.get_user_recommendations(user_id)
         hist = DATA_PROVIDER.get_user_history(user_id)
         user_info = {'user_id': user_id}
 
@@ -47,7 +47,7 @@ def api_get_recommendations():
 
     # Собираем ответ
     user_info = {'user_id': user_id}
-    recommendations = DATA_PROVIDER.get_user_recomendations(user_id)
+    recommendations = DATA_PROVIDER.get_user_recommendations(user_id)
     response = {"user": user_info, "recommendations": recommendations}
 
     return make_api_response(response, 200)
