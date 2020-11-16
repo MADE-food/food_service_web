@@ -5,4 +5,4 @@ Jinja2==2.11.2
 jsonify==0.5
 MarkupSafe==1.1.1
 Werkzeug==1.0.1
-gnunicorn==20.0.4
+gnunicorn
