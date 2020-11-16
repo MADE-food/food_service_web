@@ -66,4 +66,5 @@ def page_not_found(e):
 
 
 DATA_PROVIDER = Provider()
-app.run(port='8000')
+if __name__ == '__main__':
+    app.run(debug=True)
