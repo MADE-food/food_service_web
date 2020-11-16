@@ -1,3 +1,26 @@
+.search-container {
+
+}
+
+.search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+
 nav
 ul {
     list-style-type: none;
@@ -23,3 +46,6 @@ li a {
 li a:hover {
     background-color: #111;
 }
+
+
+

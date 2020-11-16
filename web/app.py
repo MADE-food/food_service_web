@@ -27,6 +27,11 @@ def about():
     return render_template('team.html')
 
 
+@app.route('/task', methods=['GET'])
+def task():
+    return render_template('task.html')
+
+
 # region API
 @app.route('/api/v1/recommendations/get', methods=['GET'])
 def api_get_recommendations():

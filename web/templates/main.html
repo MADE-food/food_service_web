@@ -5,11 +5,17 @@
 {% endblock %}
 
 {% block content %}
+
+
+<div class="search-container">
     <form action="/" method="post">
-        <label for="user_id">ID пользователя</label>
-        <input name="user_id" id="user_id" required>
-        <input type="submit" value="Найти">
+      <input type="text" placeholder="Search.." name="user_id">
+      <button type="submit"><i class="fa fa-search"></i></button>
     </form>
+  </div>
+
+
+
 
     <div style="display: inline-block">
         <br>

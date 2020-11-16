@@ -1,3 +1,4 @@
 .idea/
 venv/
 web_api/
+web/core/__pycache__/
