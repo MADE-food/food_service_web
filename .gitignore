@@ -2,3 +2,4 @@
 venv/
 web_api/
 web/core/__pycache__/
+core/__pycache__/

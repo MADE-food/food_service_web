@@ -66,4 +66,4 @@ def page_not_found(e):
 
 
 DATA_PROVIDER = Provider()
-app.run(host='127.0.0.1', port='5000')
+app.run()
