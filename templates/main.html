@@ -6,23 +6,43 @@
 
 {% block content %}
 
-
-<div class="search-container">
+<!-- Блок с поиска -->
+<!--
+<div class="searchbox">
+    <p>Введите ID пользователя для поиска</p>
     <form action="/" method="post">
-      <input type="text" placeholder="Search.." name="user_id">
-      <button type="submit"><i class="fa fa-search"></i></button>
+      <input type="text" placeholder="ID Пользователя" name="user_id">
+      <button type="submit"><i class="fa fa-search">Поиск</i></button>
     </form>
   </div>
+  -->
+
+<div>
+    <div class="row justify-content-center">Поиск пользователя по ID</div>
+
+    <div class="row justify-content-center">
+        <form class="form-inline" action="/" method="post">
+          <input type="text" class="form-control mb-2 mr-sm-2" name="user_id" id="user_id_input" placeholder="ID пользователя">
+          <button type="submit" class="btn btn-primary mb-2">Искать</button>
+        </form>
+    </div>
+</div>
 
 
 
 
-    <div style="display: inline-block">
-        <br>
-        <div>
+<!-- Блок с результатами -->
+{% if data %}
+    <div class="searchresult">
+        <div class="row justify-content-center"> Информация по пользователю ID = {{data['user']['user_id']}} </div>
+        <div class ="search_result_table">
             <p>История заказов:</p>
             {% if data['history'] %}
-                <table>
+                <table class="table table-hover">
+                    <tr>
+                        <th>ID ресторана</th>
+                        <th>Название ресторана</th>
+                    </tr>
                 {% for restaurant in data['history'] %}
                     <tr>
                         <td>{{ restaurant.id }}</td>
@@ -35,12 +55,14 @@
             {% endif %}
         </div>
 
-        <br>
-
-        <div>
+        <div class="search_result_table">
             <p>Рекомендации:</p>
             {% if data['recommendations'] %}
-                <table>
+                <table class="table table-hover">
+                    <tr>
+                        <th>ID ресторана</th>
+                        <th>Название ресторана</th>
+                    </tr>
                 {% for restaurant in data['recommendations'] %}
                     <tr>
                         <td>{{ restaurant.id }}</td>
@@ -53,4 +75,6 @@
             {% endif %}
         </div>
     </div>
+{% endif %}
+
 {% endblock %}

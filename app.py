@@ -9,13 +9,19 @@ app.config["DEBUG"] = True
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        user_id = int(request.form['user_id'])
+        try:
+            user_id = int(request.form['user_id'])
+        except:
+            user_id = None
+
         recom = DATA_PROVIDER.get_user_recomendations(user_id)
         hist = DATA_PROVIDER.get_user_history(user_id)
+        user_info = {'user_id': user_id}
 
         data = {
             'history': hist,
-            'recommendations': recom
+            'recommendations': recom,
+            'user': user_info
         }
     else:
         data = None
