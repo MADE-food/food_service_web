@@ -15,6 +15,7 @@ def home():
             prod_ids = [int(i) for i in request.form.getlist('prod_ids[]')]
         except:
             user_id = None
+            prod_ids = product_ids
 
         recom = DATA_PROVIDER.get_user_recommendations(user_id, filter_products = prod_ids)
         hist = DATA_PROVIDER.get_user_history(user_id)
