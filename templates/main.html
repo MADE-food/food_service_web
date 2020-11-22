@@ -7,25 +7,37 @@
 {% block content %}
 
 <!-- Блок с поиска -->
-<div>
+<div id="searchbox">
     <div class="row justify-content-center">Поиск пользователя по ID</div>
 
     <div class="row justify-content-center">
-        <form class="form-inline" action="/" method="post">
-          <input type="text" class="form-control mb-2 mr-sm-2" name="user_id" id="user_id_input" placeholder="ID пользователя">
-          <button type="submit" class="btn btn-primary mb-2">Искать</button>
+        <form action="/" method="POST">
+            <div class="form-group row">
+                <label for="user_id" class="col-sm-3 col-form-label">User</label>
+                <div class="col-sm-9">
+                  <input class="form-control" id="user_id" placeholder="user ID" name="user_id">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="productIdSelect">Product ID</label>
+                <select name="prod_ids[]" multiple="multiple" class="form-control" id="productIdSelect">
+                    {% for prod_id in product_ids %}
+                        <option value={{prod_id}}>{{prod_id}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Искать</button>
         </form>
     </div>
 </div>
 
 
-
-
 <!-- Блок с результатами -->
 {% if data %}
-    <div class="searchresult">
+    <div>
         <div class="row justify-content-center"> Информация по пользователю ID = {{data['user']['user_id']}} </div>
-        <div class ="search_result_table">
+        <div class="row justify-content-center">
+            <div class ="search_result_table">
             <p>История заказов:</p>
             {% if data['history'] %}
                 <table class="table table-hover">
@@ -44,8 +56,7 @@
                 <p>История заказов не найдена</p>
             {% endif %}
         </div>
-
-        <div class="search_result_table">
+            <div class="search_result_table">
             <p>Рекомендации:</p>
             {% if data['recommendations'] %}
                 <table class="table table-hover">
@@ -63,6 +74,7 @@
             {% else %}
                 <p>Рекомендаций нет</p>
             {% endif %}
+        </div>
         </div>
     </div>
 {% endif %}

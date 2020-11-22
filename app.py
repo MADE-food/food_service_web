@@ -8,13 +8,15 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    product_ids = DATA_PROVIDER.get_product_ids()
     if request.method == 'POST':
         try:
             user_id = int(request.form['user_id'])
+            prod_ids = [int(i) for i in request.form.getlist('prod_ids[]')]
         except:
             user_id = None
 
-        recom = DATA_PROVIDER.get_user_recommendations(user_id)
+        recom = DATA_PROVIDER.get_user_recommendations(user_id, filter_products = prod_ids)
         hist = DATA_PROVIDER.get_user_history(user_id)
         user_info = {'user_id': user_id}
 
@@ -25,7 +27,7 @@ def home():
         }
     else:
         data = None
-    return render_template('main.html', data=data)
+    return render_template('main.html', data=data, product_ids=product_ids)
 
 
 @app.route('/about', methods=['GET'])
