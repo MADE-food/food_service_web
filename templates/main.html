@@ -21,8 +21,8 @@
             <div class="form-group">
                 <label for="productIdSelect">Product ID</label>
                 <select name="prod_ids[]" multiple="multiple" class="form-control" id="productIdSelect">
-                    {% for prod_id in product_ids %}
-                        <option value={{prod_id}}>{{prod_id}}</option>
+                    {% for v in product_ids %}
+                        <option value={{v['product_id']}}>{{v['product_name']}}</option>
                     {% endfor %}
                 </select>
             </div>

@@ -17,6 +17,10 @@ class Provider():
         data['product_group_ids'] = data['product_group_ids'].apply(lambda x: json.loads(x) if x and pd.notna(x) else []) #массив групп продуктов из стринга
         self._chains_dim = data
 
+        # читаю справочник продуктов
+        data = pd.read_csv('data/products_dim.csv')
+        self._products_dim = data.to_dict(orient='records')
+
         # создаю обёртку над моделью, передаю туда список возможных айди для предикта
         self._model_wrapper = ModelWrapper(self._chains_dim['chain_id'].values)
 
@@ -60,8 +64,9 @@ class Provider():
         return self._chains_dim.sample(limit)
 
     def get_product_ids(self):
-        product_ids = list(set(np.concatenate(self._chains_dim['product_group_ids'].values)))
-        return [int(x) for x in product_ids]
+        """Возвращает список проудктов"""
+        return self._products_dim
+
 
 class RestaurantInfo(dict):
     def __init__(self):

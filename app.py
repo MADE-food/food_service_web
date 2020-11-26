@@ -9,6 +9,7 @@ app.config["DEBUG"] = True
 @app.route('/', methods=['GET', 'POST'])
 def home():
     product_ids = DATA_PROVIDER.get_product_ids()
+
     if request.method == 'POST':
         try:
             user_id = int(request.form['user_id'])
