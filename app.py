@@ -31,6 +31,19 @@ def home():
         data = None
     return render_template('main.html', data=data, product_ids=product_ids)
 
+@app.route('/roller', methods=['GET', 'POST'])
+def roller():
+    if request.method == 'GET':
+        return render_template('roller.html')
+    else:
+        selected_restaurants = list(request.form.keys())
+        recommendations = DATA_PROVIDER.get_roller_recommendations(selected_restaurants)
+
+        data = {
+            'recommendations': recommendations
+        }
+
+        return render_template('roller.html', data = data)
 
 @app.route('/about', methods=['GET'])
 def about():

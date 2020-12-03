@@ -53,6 +53,13 @@ class Provider():
         result = self._chains_dim.sample(limit).to_dict(orient='records')
         return result
 
+    def get_roller_recommendations(self, selected_restaurants):
+        #TODO отбор по выбранным ресторанам
+        predicted_chains = self.__get_chains(7)
+        # в дикт
+        result = predicted_chains.to_dict(orient='records')
+        return result
+
     def get_restaraunt_info(self, restaurant_id):
         """Возвращает информацию по выбранному ресторану"""
         found_chain = self._chains_dim.loc[self._chains_dim['chain_id']==restaurant_id]
