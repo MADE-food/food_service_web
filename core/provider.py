@@ -14,6 +14,7 @@ class Provider():
     def __init__(self):
         # читаю справочник ресторанов
         data = pd.read_csv("data/chains_dim.csv")
+
         data['product_group_ids'] = data['product_group_ids'].apply(lambda x: json.loads(x) if x and pd.notna(x) else []) #массив групп продуктов из стринга
         self._chains_dim = data
 
@@ -35,7 +36,10 @@ class Provider():
             .loc[
                     self._chains_dim['chain_id'].isin(predicted_ids)
                     &
-                    self._chains_dim['product_group_ids'].apply(lambda x: have_intersection(x, filter_products))
+                    (self._chains_dim['product_group_ids'].apply(lambda x: have_intersection(x, filter_products))
+                     |
+                     len(filter_products)==0
+                     )
         ]
         # Присваиваем ранк и сортируем по нему
         predicted_chains['rank'] = predicted_chains['chain_id'].map(model_predictions)
