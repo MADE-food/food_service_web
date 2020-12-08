@@ -25,12 +25,9 @@ class Provider():
         # создаю обёртку над моделью, передаю туда список возможных айди для предикта
         self._model_wrapper = ModelWrapper(self._chains_dim['chain_id'].values)
 
-    def __predictions_to_dict(self, model_predictions, filtered_chains=None):
+    def __predictions_to_dict(self, model_predictions, filtered_chains):
         predicted_ids = list(model_predictions.keys())
-        if filtered_chains:
-            predicted_chains = filtered_chains.loc[filtered_chains['chain_id'].isin(predicted_ids)]
-        else:
-            predicted_chains = self._chains_dim.loc[self._chains_dim['chain_id'].isin(predicted_ids)]
+        predicted_chains = filtered_chains.loc[filtered_chains['chain_id'].isin(predicted_ids)]
 
         predicted_chains['rank'] = predicted_chains['chain_id'].map(model_predictions)
         predicted_chains.sort_values(by='rank', inplace=True)
@@ -43,21 +40,23 @@ class Provider():
         # словарь айди с предиктом модели, уже сортированный по убыванию важности
         model_predictions = self._model_wrapper.predict(user_id)
 
-        #Отбираю чейны по фильтру
-        filtered_chains = self._chains_dim\
-            .loc[(self._chains_dim['product_group_ids'].apply(lambda x: have_intersection(x, filter_products))
-                    |
-                    len(filter_products) == 0
-                 )]
-        #отбираю про предиктам
-        predicted_chains = self.__predictions_to_dict(model_predictions, filtered_chains)
+        if len(model_predictions)>0:
+            #Отбираю чейны по фильтру
+            filtered_chains = self._chains_dim\
+                .loc[(self._chains_dim['product_group_ids'].apply(lambda x: have_intersection(x, filter_products))
+                        |
+                        len(filter_products) == 0
+                     )]
+            #отбираю про предиктам
+            predicted_chains = self.__predictions_to_dict(model_predictions, filtered_chains)
 
-        # отрезаю по лимиту
-        predicted_chains = predicted_chains.head(limit)
+            # отрезаю по лимиту
+            predicted_chains = predicted_chains.head(limit)
 
-        # в дикт
-        result = predicted_chains.to_dict(orient='records')
-        return result
+            # в дикт
+            result = predicted_chains.to_dict(orient='records')
+            return result
+        return None
 
     def get_user_history(self, user_id, limit=7):
         """Возвращает историю пользователя"""
@@ -68,7 +67,7 @@ class Provider():
 
         model_predictions = self._model_wrapper.predict_by_roller(selected_restaurants)
         # отбираю про предиктам
-        predicted_chains = self.__predictions_to_dict(model_predictions)
+        predicted_chains = self.__predictions_to_dict(model_predictions, self._chains_dim)
         # в дикт
         result = predicted_chains.to_dict(orient='records')
         return result
