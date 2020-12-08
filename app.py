@@ -37,6 +37,7 @@ def roller():
         return render_template('roller.html')
     else:
         selected_restaurants = list(request.form.keys())
+        selected_restaurants = [int(sr) for sr in selected_restaurants]
         recommendations = DATA_PROVIDER.get_roller_recommendations(selected_restaurants)
 
         data = {

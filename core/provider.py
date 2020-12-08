@@ -25,25 +25,32 @@ class Provider():
         # создаю обёртку над моделью, передаю туда список возможных айди для предикта
         self._model_wrapper = ModelWrapper(self._chains_dim['chain_id'].values)
 
+    def __predictions_to_dict(self, model_predictions, filtered_chains=None):
+        predicted_ids = list(model_predictions.keys())
+        if filtered_chains:
+            predicted_chains = filtered_chains.loc[filtered_chains['chain_id'].isin(predicted_ids)]
+        else:
+            predicted_chains = self._chains_dim.loc[self._chains_dim['chain_id'].isin(predicted_ids)]
+
+        predicted_chains['rank'] = predicted_chains['chain_id'].map(model_predictions)
+        predicted_chains.sort_values(by='rank', inplace=True)
+
+        return predicted_chains
+
+
     def get_user_recommendations(self, user_id, limit=15, filter_products=[]):
         """Возвращает рекомендации пользователя"""
         # словарь айди с предиктом модели, уже сортированный по убыванию важности
         model_predictions = self._model_wrapper.predict(user_id)
-        predicted_ids = list(model_predictions.keys())
 
-        # Вытаскиваю из справочника только тех, кого рекомендовала модель
-        predicted_chains = self._chains_dim \
-            .loc[
-                    self._chains_dim['chain_id'].isin(predicted_ids)
-                    &
-                    (self._chains_dim['product_group_ids'].apply(lambda x: have_intersection(x, filter_products))
-                     |
-                     len(filter_products)==0
-                     )
-        ]
-        # Присваиваем ранк и сортируем по нему
-        predicted_chains['rank'] = predicted_chains['chain_id'].map(model_predictions)
-        predicted_chains.sort_values(by='rank', inplace=True)
+        #Отбираю чейны по фильтру
+        filtered_chains = self._chains_dim\
+            .loc[(self._chains_dim['product_group_ids'].apply(lambda x: have_intersection(x, filter_products))
+                    |
+                    len(filter_products) == 0
+                 )]
+        #отбираю про предиктам
+        predicted_chains = self.__predictions_to_dict(model_predictions, filtered_chains)
 
         # отрезаю по лимиту
         predicted_chains = predicted_chains.head(limit)
@@ -58,8 +65,10 @@ class Provider():
         return result
 
     def get_roller_recommendations(self, selected_restaurants):
-        #TODO отбор по выбранным ресторанам
-        predicted_chains = self.__get_chains(7)
+
+        model_predictions = self._model_wrapper.predict_by_roller(selected_restaurants)
+        # отбираю про предиктам
+        predicted_chains = self.__predictions_to_dict(model_predictions)
         # в дикт
         result = predicted_chains.to_dict(orient='records')
         return result
