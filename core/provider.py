@@ -28,7 +28,7 @@ class Provider():
         # создаю обёртку над моделью, передаю туда список возможных айди для предикта
         self._model_wrapper = ModelWrapper(self._chains_dim['chain_id'].values)
 
-    def __predictions_to_dict(self, model_predictions, filtered_chains):
+    def __enrich_predictions(self, model_predictions, filtered_chains):
         predicted_ids = list(model_predictions.keys())
         predicted_chains = filtered_chains.loc[filtered_chains['chain_id'].isin(predicted_ids)]
 
@@ -51,7 +51,7 @@ class Provider():
                         len(filter_products) == 0
                      )]
             #отбираю про предиктам
-            predicted_chains = self.__predictions_to_dict(model_predictions, filtered_chains)
+            predicted_chains = self.__enrich_predictions(model_predictions, filtered_chains)
 
             # отрезаю по лимиту
             predicted_chains = predicted_chains.head(limit)
@@ -74,8 +74,15 @@ class Provider():
     def get_roller_recommendations(self, selected_restaurants):
 
         model_predictions = self._model_wrapper.predict_by_roller(selected_restaurants)
+        selected_restaurants_names = \
+            self._chains_dim.loc[self._chains_dim['chain_id'].isin(selected_restaurants), 'chain_name'].values
+
         # отбираю про предиктам
-        predicted_chains = self.__predictions_to_dict(model_predictions, self._chains_dim)
+        predicted_chains = self.__enrich_predictions(model_predictions, self._chains_dim)
+
+        # не показываю тех, кто был в списке выбранных
+        predicted_chains = predicted_chains.loc[~predicted_chains['chain_name'].isin(selected_restaurants_names)]
+
         # в дикт
         result = predicted_chains.to_dict(orient='records')
         return result
