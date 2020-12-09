@@ -22,6 +22,9 @@ class Provider():
         data = pd.read_csv('data/products_dim.csv')
         self._products_dim = data.to_dict(orient='records')
 
+        # читаю пользовательскую историю
+        self._history = pd.read_parquet('data/history.parquet')
+
         # создаю обёртку над моделью, передаю туда список возможных айди для предикта
         self._model_wrapper = ModelWrapper(self._chains_dim['chain_id'].values)
 
@@ -60,7 +63,12 @@ class Provider():
 
     def get_user_history(self, user_id, limit=7):
         """Возвращает историю пользователя"""
-        result = self._chains_dim.sample(limit).to_dict(orient='records')
+        #result = self._chains_dim.sample(limit).to_dict(orient='records')
+
+        user_hist = self._history.loc[self._history['customer_id']==user_id]
+        result = pd.merge(user_hist, self._chains_dim, on=['chain_id'])[['chain_id', 'chain_name']].head(limit).to_dict(orient='records')
+        #result = user_hist.join(self._chains_dim, on=['chain_id'], lsuffix='hist_')[['chain_id', 'chain_name']].to_dict(orient='records')
+
         return result
 
     def get_roller_recommendations(self, selected_restaurants):
