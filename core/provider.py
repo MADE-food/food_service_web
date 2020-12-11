@@ -74,6 +74,7 @@ class Provider():
     def get_roller_recommendations(self, selected_restaurants):
 
         model_predictions = self._model_wrapper.predict_by_roller(selected_restaurants)
+        # Имена выбранных  в роллере
         selected_restaurants_names = \
             self._chains_dim.loc[self._chains_dim['chain_id'].isin(selected_restaurants), 'chain_name'].values
 
