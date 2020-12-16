@@ -13,11 +13,24 @@
     <div class="row justify-content-center">
         <form action="/" method="POST">
             <div class="form-group row">
-                <label for="user_id" class="col-sm-3 col-form-label">User</label>
-                <div class="col-sm-9">
+                <label for="userIdSelect" class="col-sm-3 col-form-label">User</label>
+                <select name="user_id_dd" class="form-control" id="userIdSelect">
+                    <option selected value = 350>350</option>
+                    <option value = 355>355</option>
+                    <option value = 442>442</option>
+                    <option value = 482>484</option>
+                    <option value = 656>656</option>
+                    <option value = 904>904</option>
+                    <option value = 964>964</option>
+                </select>
+            </div>
+            <p align="center">или</p>
+            <div class="row justify-content-center">
+            <div class="col-sm-9">
                   <input class="form-control" id="user_id" placeholder="user ID" name="user_id">
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="productIdSelect">Категории:</label>
                 <select name="prod_ids[]" multiple="multiple" class="form-control" id="productIdSelect">

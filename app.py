@@ -12,8 +12,12 @@ def home():
 
     if request.method == 'POST':
         try:
-            user_id = int(request.form['user_id'])
+            if request.form['user_id']:
+                user_id = int(request.form['user_id'])
+            else:
+                user_id = int(request.form['user_id_dd'])
             prod_ids = [int(i) for i in request.form.getlist('prod_ids[]')]
+
         except:
             user_id = None
             prod_ids = product_ids
