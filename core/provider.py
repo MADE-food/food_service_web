@@ -33,7 +33,7 @@ class Provider():
         predicted_chains = filtered_chains.loc[filtered_chains['chain_id'].isin(predicted_ids)]
 
         predicted_chains['rank'] = predicted_chains['chain_id'].map(model_predictions)
-        predicted_chains.sort_values(by='rank', inplace=True)
+        predicted_chains.sort_values(by='rank', inplace=True, ascending=False)
 
         return predicted_chains
 

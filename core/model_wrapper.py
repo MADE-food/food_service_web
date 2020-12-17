@@ -11,9 +11,10 @@ class ModelWrapper():
 
     def predict(self, user_id, limit=15):
         predictions = self._predictions.loc[self._predictions['customer_id']==user_id].head(limit)
-        predictions.sort_values('pred', ascending=False, inplace=True)
+        predictions.sort_values('pred', ascending=True, inplace=True)
+        predictions_dict = predictions[['chain_id', 'pred']].to_dict(orient='rows')
 
-        return {p: i for i, p in enumerate(predictions['chain_id'].values)}
+        return {pd['chain_id']:pd['pred'] for pd in predictions_dict}
 
     def predict_by_roller(self, selected_restaurants):
         def IoU(list1, list2):

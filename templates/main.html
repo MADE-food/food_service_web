@@ -78,11 +78,13 @@
                     <tr>
                         <th>ID ресторана</th>
                         <th>Название ресторана</th>
+                        <th>Score</th>
                     </tr>
                 {% for chain in data['recommendations'] %}
                     <tr>
                         <td>{{ chain['chain_id'] }}</td>
                         <td>{{ chain['chain_name'] }}</td>
+                        <!--<td>{{ '%0.3f'| format(chain['rank']|float) }}</td>-->
                     </tr>
                 {% endfor %}
                 </table>
