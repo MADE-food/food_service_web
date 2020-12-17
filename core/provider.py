@@ -13,7 +13,7 @@ def have_intersection(a1, a2):
 class Provider():
     def __init__(self):
         # читаю справочник ресторанов
-        data = pd.read_csv("data/chains_dim.csv")
+        data = pd.read_csv("data/chains_dim.csv", dtype={'default_product_group_id':pd.Int64Dtype()})
 
         data['product_group_ids'] = data['product_group_ids'].apply(lambda x: json.loads(x) if x and pd.notna(x) else []) #массив групп продуктов из стринга
         self._chains_dim = data
@@ -46,10 +46,10 @@ class Provider():
         if len(model_predictions)>0:
             #Отбираю чейны по фильтру
             filtered_chains = self._chains_dim\
-                .loc[(self._chains_dim['product_group_ids'].apply(lambda x: have_intersection(x, filter_products))
+                .loc[(self._chains_dim['default_product_group_id'].isin(filter_products))
                         |
-                        len(filter_products) == 0
-                     )]
+                     (len(filter_products) == 0)
+                ]
             #отбираю про предиктам
             predicted_chains = self.__enrich_predictions(model_predictions, filtered_chains)
 

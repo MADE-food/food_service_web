@@ -103,11 +103,13 @@
                     <tr>
                         <th>ID ресторана</th>
                         <th>Название ресторана</th>
+                        <th>Категория продуктов</th>
                     </tr>
                 {% for chain in data['recommendations'] %}
                     <tr>
                         <td>{{ chain['chain_id'] }}</td>
                         <td>{{ chain['chain_name'] }}</td>
+                        <td>{{ chain['default_product_group_id'] }}</td>
                     </tr>
                 {% endfor %}
                 </table>

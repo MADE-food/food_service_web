@@ -5,6 +5,7 @@ class ModelWrapper():
     def __init__(self, possible_predictions):
         self._id_space = possible_predictions
         self._predictions = pd.read_parquet('data/pred2.parquet')
+
         self._roller_data = pd.read_parquet('data/generated.parquet')
 
 
